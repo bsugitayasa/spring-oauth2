@@ -85,36 +85,36 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
 ### Spring Boot Initializr ###
 
-1. Create new project --> Browse [https://start.spring.io/] (https://start.spring.io/)
+1. Buat project baru --> Browse [https://start.spring.io/] (https://start.spring.io/)
 
-2. Fill Project Metadata
+2. Lengkapi Project Metadata
 
     Group
     
     ```
-    com.sheringsession.balicamp.zipkin    
+    com.sharingsession.balicamp.springsecurity    
     ```
 
     Artifact
     
     ```
-    zipkin-sleuth
+    account
     ```
    
     Dependencies
     
     ```
-    Zipkin UI, Eureka Discovery, Config Client
+    Eureka Discovery, Config Client, Web, Cloud OAuth2, Security, Flyway, MySQL, JDBC
     ```
    
 3. Generate Project
 
-4. Download dan import to your IDE
+4. Download dan import pada IDE masing-masing
 
 
 ### Build with Maven ###
 
-1. In `pom.xml` makesure for dependency
+1. Pada `pom.xml` pastikan dependency berikut
     
     ```
     <dependency>
@@ -126,22 +126,40 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
         <artifactId>spring-cloud-starter-eureka</artifactId>
     </dependency>
     <dependency>
-        <groupId>io.zipkin.java</groupId>
-        <artifactId>zipkin-server</artifactId>
+        <gro    upId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-oauth2</artifactId>
     </dependency>
     <dependency>
-        <groupId>io.zipkin.java</groupId>
-        <artifactId>zipkin-autoconfigure-ui</artifactId>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
         <scope>runtime</scope>
     </dependency>
     ```
 
-2. `applicatioin.properties` rename into `bootstrap.yml`
+2. `applicatioin.properties` rename menjadi `bootstrap.yml` dan sesuaikan konfigurasinya
 
     ```
+    server:
+      port: 8899
     spring:
       application:
-        name: zipkin
+        name: account
       cloud:
         config:
           discovery:
@@ -152,11 +170,9 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     ---
     spring:
       profiles: native
-    server:
-      port: 8898
     eureka:
       instance:
-        hostname: localhost:8898
+        hostname: localhost:8899
       client:
           serviceUrl:
             defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
@@ -164,52 +180,341 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
 ### Build with IDE ###
 
-3. Add `@EnableZipkinServer` into your spring project configuration
+* Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
+
+    1. V2017110301__Skema_Security.sql
+    
+    ```
+    CREATE TABLE s_permission (
+      id               VARCHAR(255) NOT NULL,
+      permission_label VARCHAR(255) NOT NULL,
+      permission_value VARCHAR(255) NOT NULL,
+      PRIMARY KEY (id),
+      UNIQUE (permission_value)
+    );
+
+    CREATE TABLE s_role (
+      id          VARCHAR(255) NOT NULL,
+      description VARCHAR(255) DEFAULT NULL,
+      name        VARCHAR(255) NOT NULL,
+      PRIMARY KEY (id),
+      UNIQUE (name)
+    );
+
+    CREATE TABLE s_role_permission (
+      id_role       VARCHAR(255) NOT NULL,
+      id_permission VARCHAR(255) NOT NULL,
+      PRIMARY KEY (id_role, id_permission),
+      FOREIGN KEY (id_permission) REFERENCES s_permission (id),
+      FOREIGN KEY (id_role) REFERENCES s_role (id)
+    );
+
+    CREATE TABLE s_user (
+      id       VARCHAR(36),
+      username VARCHAR(255) NOT NULL,
+      active   BOOLEAN      NOT NULL,
+      id_role  VARCHAR(255) NOT NULL,
+      PRIMARY KEY (id),
+      UNIQUE (username),
+      FOREIGN KEY (id_role) REFERENCES s_role (id)
+    );
+
+
+    create table s_user_password (
+        id_user varchar(36) not null,
+        password varchar(255) not null,
+        primary key (id_user),
+        foreign key (id_user) references s_user (id)
+    );
+    ```
+    
+    2. V2017110302__Skema_OAuth.sql
+    
+    ```
+    create table oauth_client_details (
+      client_id VARCHAR(255) PRIMARY KEY,
+      resource_ids VARCHAR(255),
+      client_secret VARCHAR(255),
+      scope VARCHAR(255),
+      authorized_grant_types VARCHAR(255),
+      web_server_redirect_uri VARCHAR(255),
+      authorities VARCHAR(255),
+      access_token_validity INTEGER,
+      refresh_token_validity INTEGER,
+      additional_information VARCHAR(4096),
+      autoapprove VARCHAR(255)
+    );
+
+    create table oauth_client_token (
+      token_id VARCHAR(255),
+      token BLOB,
+      authentication_id VARCHAR(255) PRIMARY KEY,
+      user_name VARCHAR(255),
+      client_id VARCHAR(255)
+    );
+
+    create table oauth_access_token (
+      token_id VARCHAR(255),
+      token BLOB,
+      authentication_id VARCHAR(255) PRIMARY KEY,
+      user_name VARCHAR(255),
+      client_id VARCHAR(255),
+      authentication BLOB,
+      refresh_token VARCHAR(255)
+    );
+
+    create table oauth_refresh_token (
+      token_id VARCHAR(255),
+      token BLOB,
+      authentication BLOB
+    );
+
+    create table oauth_code (
+      code VARCHAR(255), authentication BLOB
+    );
+
+    create table oauth_approvals (
+      userId VARCHAR(255),
+      clientId VARCHAR(255),
+      scope VARCHAR(255),
+      status VARCHAR(10),
+      expiresAt TIMESTAMP,
+      lastModifiedAt TIMESTAMP
+    );
+    ```
+
+    3. V2017110303__Data_Security.sql
+    
+    ```
+    INSERT INTO s_permission (id, permission_label, permission_value) VALUES
+      ('configuresystem', 'CONFIGURE_SYSTEM', 'Configure System'),
+      ('editproduct', 'EDIT_PRODUCT', 'Edit Product'),
+      ('viewproduct', 'VIEW_PRODUCT', 'View Product');
+
+    INSERT INTO s_role (id, description, name) VALUES
+      ('superuser', 'SUPERUSER', 'Super User'),
+      ('staff', 'STAFF', 'Staff'),
+      ('manager', 'MANAGER', 'Manager');
+
+    INSERT INTO s_role_permission (id_role, id_permission) VALUES
+      ('staff', 'viewproduct'),
+      ('manager', 'viewproduct'),
+      ('manager', 'editproduct'),
+      ('superuser', 'viewproduct'),
+      ('superuser', 'editproduct'),
+      ('superuser', 'configuresystem');
+
+    INSERT INTO s_user (id, active, username, id_role) VALUES
+      ('staff', true,'staff', 'staff');
+
+    INSERT INTO s_user_password (id_user, password) VALUES
+      -- password : balicamp123 menggunakan BCryptPasswordEncoder
+      ('staff', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW');
+    ```
+    
+    4. V2017110304__Data_OAuth.sql
+    
+    ```
+    INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES
+    ('userpassword', 'marketplace', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW', 'demo', 'password', 'http://example.com', 'APLIKASI_CLIENT_OAUTH2', 1800, 18000, '{}', 'demo');
+    ```
+    
+* Tambahkan annotation `@EnableDiscoveryClient` pada main class spring project configuration
 
     ```
     @SpringBootApplication
-    @EnableZipkinServer
-    public class ZipkinApplication {
+    @EnableDiscoveryClient
+    public class AccountApplication {
 
         public static void main(String[] args) {
-            SpringApplication.run(ZipkinApplication.class, args);
+            SpringApplication.run(AccountApplication.class, args);
         }
     }
     ```
 
-### Configure In Microservice (Client) ###
+* Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan extends `WebSecurityConfigurerAdapter`
 
-1. In `pom.xml` add new dependency
+    ```
+    @EnableWebSecurity
+    public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
+        private static final String SQL_LOGIN = "select u.username as username, p.password as password, "
+                + "active from s_user u inner join s_user_password p on p.id_user = u.id " + "where username = ? ";
+
+        private static final String SQL_PERMISSION = " select u.username, p.permission_value as authority "
+                + "from s_user u inner join s_role r on u.id_role = r.id "
+                + "inner join s_role_permission rp on rp.id_role = r.id "
+                + "inner join s_permission p on rp.id_permission = p.id " + "where u.username = ?";
+
+        @Autowired
+        private DataSource datasource;
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.jdbcAuthentication().dataSource(datasource).passwordEncoder(passwordEncoder())
+                    .usersByUsernameQuery(SQL_LOGIN).authoritiesByUsernameQuery(SQL_PERMISSION);
+        }
+
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.formLogin().permitAll().and().logout().and().authorizeRequests().anyRequest().authenticated();
+        }
+
+        @Bean
+        @Override
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
+        }
+
+        @Bean
+        @Override
+        public UserDetailsService userDetailsServiceBean() throws Exception {
+            return super.userDetailsServiceBean();
+        }
+    }
+    ```
+
+* Tambahkan class KonfigurasiAuthserver dengan annotation `@Configuration @EnableAuthorizationServer` dan extends `AuthorizationServerConfigurerAdapter`
+    
+    ```
+    @Configuration
+    @EnableAuthorizationServer
+    public class KonfigurasiAuthserver extends AuthorizationServerConfigurerAdapter {
+        @Autowired
+        @Qualifier("authenticationManagerBean")
+        private AuthenticationManager authenticationManager;
+
+        @Autowired
+        @Qualifier("userDetailsServiceBean")
+        private UserDetailsService userDetailsService;
+
+        @Autowired private DataSource dataSource;
+
+        private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        @Override
+        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+            clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
+        }
+
+        @Override
+        public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+            security.checkTokenAccess("hasAuthority('APLIKASI_CLIENT_OAUTH2')")
+                .tokenKeyAccess("permitAll()")
+                .passwordEncoder(passwordEncoder);
+        }
+
+        @Override
+        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+            endpoints.authenticationManager(authenticationManager).userDetailsService(userDetailsService);
+        }
+    }
+    ```
+
+### Request Code Via Auth Form ###
+
+* Jalankan account project dengan perintah : `mvn spring-boot:run`  
+* Akses aplikasi Auth Server ke halaman [http://localhost:8899/oauth/authorize?client_id=authcodeclient&response_type=code&redirect_uri=http://example.com]
+* Masukkan username & password sesuai data s_user_permission
+* Pilih `Approve` pada OAuth Approval dan `Authorize`
+* Cata code hasil response dari auth form, misal :
+
+    ```
+    http://example.com/?code=y4C0wP
+    ```
+    
+    Code dari hasil auth form adalah `y4C0wP`
+
+### Proteksi Microservices Sebagai Resource Server ###
+
+* Pilih aplikasi Payment untuk menjadi resource server
+* Pada `pom.xml` tambahkan dependency berikut
     
     ```
     <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-sleuth-zipkin</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-sleuth</artifactId>
+        <groupId>org.springframework.security.oauth</groupId>
+        <artifactId>spring-security-oauth2</artifactId>
     </dependency>
     ```
-
-2. In `bootstrap.yml` add new properties
-
-    ```
-    spring:
-        ...
-        zipkin:
-            base-url: http://localhost:8765 #or your zipkin server uri
-        sleuth:
-            sampler:
-              percentage: 1.0
-    ```
-
-3. You will see something like this in the logging, ex: browse from catalog service
+    
+* Pada main class spring boot application, tambahkan annotation `@EnableResourceServer` 
 
     ```
-    2017-10-30 17:45:00.923  INFO [catalog,4a10e06c3fe40f0f,4a10e06c3fe40f0f,false] 2829 --- [nio-8764-exec-1] i.t.t.m.c.c.ProductApiController         : ##### Mengambil data semua produk
+    @SpringBootApplication @EnableDiscoveryClient @EnableFeignClients @EnableResourceServer
+    public class PaymentFeignApplication {
+
+        public static void main(String[] args) {
+            SpringApplication.run(PaymentFeignApplication.class, args);
+        }
+    }
+    ```
+    
+* Pada bootstrap.yml tambahkan setingan security oauth2 sebagai berikut
+
+    ```
+    security:
+      oauth2:
+        client:
+          client-id: authcodeclient
+          client-secret: authcode321
+          resource-ids: marketplace
+        resource:
+          token-info-uri: http://localhost:8899/oauth/check_token
     ```
 
-In the example, `catalog` is the `spring.application.name`, `4a10e06c3fe40f0f` is the trace ID and `4a10e06c3fe40f0f` is the span ID.
+* Jalankan payment project dengan perintah : `mvn spring-boot:run` dan akses aplikasi via rest misal nya `/payment/api/product/p001`, akan mendapatkan response bahwa untuk akses halaman tersebut harus memiliki full authentication 
+
+    ```
+    <oauth>
+        <error_description>
+                Full authentication is required to access this resource
+            </error_description>
+        <error>unauthorized</error>
+    </oauth>
+    ```
+    
+### Request Access Token ###
+
+* Akses melalui info uri pada account project via rest client dengan ketentuan sebagai berikut:
+
+    ```
+    http://localhost:8899/oauth/token
+    ```
+    
+    Basic Auth 
+    
+    ```
+    authcodeclient : authcode321
+    ```
+    
+    Query Parameter 
+    
+    ```
+    grant_type      : authorization_code
+    code            : hasil request via auth form sebelumnya
+    redirect_uri    : http://example.com
+    ```
+    
+    Contoh response token yang diperoleh adalah
+    
+    ```
+    {
+        "access_token": "5da488f0-6d64-4c4f-b8f7-ce4714749cfb",
+        "token_type": "bearer",
+        "refresh_token": "6a7d8779-ddc7-4a54-8d67-bfd118d4a0d5",
+        "expires_in": 299,
+        "scope": "demo"
+    }
+```
+
+* Sertakan token untuk mengkases aplikasi payment via url berikut:
+
+    ```
+    http://localhost:8767/payment/api/product/p002?access_token=5da488f0-6d64-4c4f-b8f7-ce4714749cfb
+    ```
 
 ### FINISH ###
