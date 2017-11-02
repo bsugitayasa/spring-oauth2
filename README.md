@@ -74,9 +74,12 @@ Protokol OAuth memiliki beberapa Mode :
 * Fitur terbaru --> kamera yang sudah terkoneksi dengan cloud service
 * Input terbatas (misal tidak bisa buka browser / auth form)
 * Menyediakan suatu kode unik saat ingin akses via browser
+* Biasanya menggunakan metode pooling, karena berjalannya di belakang firewall/proxy dan auth server tidak bisa komunikasi via ip public
 * Flow sebagai berikut
 
 ![Oauth2-device](img/oauth2-006.jpg)
+
+Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-2-device-flow-grant/)
 
 ## Build and Run ##
 
