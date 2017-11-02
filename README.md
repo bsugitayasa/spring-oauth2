@@ -43,6 +43,7 @@ Protokol OAuth memiliki beberapa Mode :
 
 ![Oauth2-authorization-code](img/oauth2-002.jpg)
 
+
 ### Implicit ###
 
 * Tidak menyimpan client key
@@ -52,6 +53,7 @@ Protokol OAuth memiliki beberapa Mode :
 
 ![Oauth2-implicit](img/oauth2-003.jpg)
 
+
 ### Resource Owner Password ###
 
 * Client app dan resource server didevelop oleh pihak yang sama, contoh : facebook membuat client app sendiri (facebook mobile) disimpan di server karena sama-sama di develop oleh perusahaan facebook
@@ -60,6 +62,7 @@ Protokol OAuth memiliki beberapa Mode :
 * Flow sebagai berikut
 
 ![Oauth2-resource-owner-password](img/oauth2-004.jpg)
+
 
 ### Client Credential ###
 
@@ -80,6 +83,7 @@ Protokol OAuth memiliki beberapa Mode :
 ![Oauth2-device](img/oauth2-006.jpg)
 
 Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-2-device-flow-grant/)
+
 
 ## Build and Run ##
 
@@ -112,7 +116,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 4. Download dan import pada IDE masing-masing
 
 
-### Build with Maven ###
+### Build dengan Maven ###
 
 1. Pada `pom.xml` pastikan dependency berikut
     
@@ -178,11 +182,12 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
             defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
     ```
 
-### Build with IDE ###
 
-* Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
+### Build dengan IDE ###
 
-1. V2017110301__Skema_Security.sql
+1. Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
+
+* V2017110301__Skema_Security.sql
     
     ```
     CREATE TABLE s_permission (
@@ -228,7 +233,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     );
     ```
     
-2. V2017110302__Skema_OAuth.sql
+* V2017110302__Skema_OAuth.sql
     
     ```
     create table oauth_client_details (
@@ -278,12 +283,12 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
       clientId VARCHAR(255),
       scope VARCHAR(255),
       status VARCHAR(10),
-      expiresAt TIMESTAMP,
-      lastModifiedAt TIMESTAMP
+      expiresAt TIMESTAMP DEFAULT  CURRENT_TIMESTAMP,
+      lastModifiedAt TIMESTAMP DEFAULT  CURRENT_TIMESTAMP
     );
     ```
 
-3. V2017110303__Data_Security.sql
+* V2017110303__Data_Security.sql
     
     ```
     INSERT INTO s_permission (id, permission_label, permission_value) VALUES
@@ -312,14 +317,14 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
       ('staff', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW');
     ```
     
-4. V2017110304__Data_OAuth.sql
+* V2017110304__Data_OAuth.sql
     
     ```
     INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES
     ('userpassword', 'marketplace', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW', 'demo', 'password', 'http://example.com', 'APLIKASI_CLIENT_OAUTH2', 1800, 18000, '{}', 'demo');
     ```
     
-* Tambahkan annotation `@EnableDiscoveryClient` pada main class spring project configuration
+2. Tambahkan annotation `@EnableDiscoveryClient` pada main class spring project configuration
 
     ```
     @SpringBootApplication
@@ -332,7 +337,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     }
     ```
 
-* Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan extends `WebSecurityConfigurerAdapter`
+3. Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan extends `WebSecurityConfigurerAdapter`
 
     ```
     @EnableWebSecurity
@@ -378,7 +383,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     }
     ```
 
-* Tambahkan class KonfigurasiAuthserver dengan annotation `@Configuration @EnableAuthorizationServer` dan extends `AuthorizationServerConfigurerAdapter`
+4. Tambahkan class KonfigurasiAuthserver dengan annotation `@Configuration @EnableAuthorizationServer` dan extends `AuthorizationServerConfigurerAdapter`
     
     ```
     @Configuration
@@ -415,6 +420,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     }
     ```
 
+
 ### Request Code Via Auth Form ###
 
 * Jalankan account project dengan perintah : `mvn spring-boot:run`  
@@ -429,10 +435,11 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     
     Code dari hasil auth form adalah `y4C0wP`
 
+
 ### Proteksi Microservices Sebagai Resource Server ###
 
-* Pilih aplikasi Payment untuk menjadi resource server
-* Pada `pom.xml` tambahkan dependency berikut
+1. Pilih aplikasi Payment untuk menjadi resource server
+2. Pada `pom.xml` tambahkan dependency berikut
     
     ```
     <dependency>
@@ -441,7 +448,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     </dependency>
     ```
     
-* Pada main class spring boot application, tambahkan annotation `@EnableResourceServer` 
+3. Pada main class spring boot application, tambahkan annotation `@EnableResourceServer` 
 
     ```
     @SpringBootApplication @EnableDiscoveryClient @EnableFeignClients @EnableResourceServer
@@ -453,7 +460,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     }
     ```
     
-* Pada bootstrap.yml tambahkan setingan security oauth2 sebagai berikut
+4. Pada bootstrap.yml tambahkan setingan security oauth2 sebagai berikut
 
     ```
     security:
@@ -466,7 +473,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
           token-info-uri: http://localhost:8899/oauth/check_token
     ```
 
-* Jalankan payment project dengan perintah : `mvn spring-boot:run` dan akses aplikasi via rest misal nya `/payment/api/product/p001`, akan mendapatkan response bahwa untuk akses halaman tersebut harus memiliki full authentication 
+5. Jalankan payment project dengan perintah : `mvn spring-boot:run` dan akses aplikasi via rest misal nya `/payment/api/product/p001`, akan mendapatkan response bahwa untuk akses halaman tersebut harus memiliki full authentication 
 
     ```
     <oauth>
@@ -477,9 +484,12 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     </oauth>
     ```
     
+Untuk memperoleh full authentication access pada halaman payment API diatas, maka perlu menyertakan access_token
+
+
 ### Request Access Token ###
 
-* Akses melalui info uri pada account project via rest client dengan ketentuan sebagai berikut:
+1. Akses melalui info uri pada account project via rest client (ex: posman, soapUI, boomerang, insomnia) dengan ketentuan sebagai berikut:
 
     ```
     http://localhost:8899/oauth/token
@@ -499,6 +509,12 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     redirect_uri    : http://example.com
     ```
     
+    Sehingga format url path yang dipanggil adalah 
+    
+    ```
+    http://localhost:8899/oauth/token?grant_type=authorization_code&code=3FNRRf&redirect_uri=http%3A%2F%2Fexample.com
+    ```
+    
     Contoh response token yang diperoleh adalah
     
     ```
@@ -511,7 +527,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     }
 ```
 
-* Sertakan token untuk mengkases aplikasi payment via url berikut:
+2. Sertakan token untuk mengkases aplikasi payment via url berikut:
 
     ```
     http://localhost:8767/payment/api/product/p002?access_token=5da488f0-6d64-4c4f-b8f7-ce4714749cfb
