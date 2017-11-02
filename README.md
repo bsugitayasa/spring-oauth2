@@ -108,7 +108,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     Dependencies
     
     ```
-    Eureka Discovery, Config Client, Web, Cloud OAuth2, Security, Flyway, MySQL, JDBC
+    Eureka Discovery, Config Client, Web, Security, Flyway, MySQL, JDBC
     ```
    
 3. Generate Project
@@ -129,10 +129,10 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-eureka</artifactId>
     </dependency>
-    <dependency>
-        <gro    upId>org.springframework.cloud</groupId>
+    *<dependency>
+        <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-oauth2</artifactId>
-    </dependency>
+    </dependency>*
     <dependency>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-core</artifactId>
