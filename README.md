@@ -1,4 +1,4 @@
-# Spring OAUTH2 #
+# Spring OAuth 2.0 #
 
 Roadmap
 
@@ -6,7 +6,7 @@ Roadmap
 * Build from scratch
 * Live Demo
 
-## Spring Oauth2 ##
+## Spring Oauth 2.0 ##
 
 * Spring OAuth 2.0 sebenarnya adalah untuk Authorization --> berkaitan dengan permission atau ijin akses/role/privileges
 * Mengijinkan aplikasi pihak ketiga untuk mendapatkan akses terbatas ke HTTP service
@@ -48,29 +48,41 @@ Protokol OAuth memiliki beberapa Mode :
 * Tidak menyimpan client key
 * Resource Owner tidak pernah memberikan password ke client app
 * Selalu berkaitan dengan Resoure Owner
+* Flow sebagai berikut
+
+![Oauth2-implicit](img/oauth2-003.jpg)
 
 ### Resource Owner Password ###
 
 * Client app dan resource server didevelop oleh pihak yang sama, contoh : facebook membuat client app sendiri (facebook mobile) disimpan di server karena sama-sama di develop oleh perusahaan facebook
 * Client app dapat langsung menerima client credential (username & password) dari Resource Owner --> ContentType : RO & Password
 * Selalu berkaitan dengan Resoure Owner
+* Flow sebagai berikut
+
+![Oauth2-resource-owner-password](img/oauth2-004.jpg)
 
 ### Client Credential ###
 
 * Client app tidak spesifik terhadap user data tertentu, contoh : treading topik pada twitter
 * Hanya antara Client app dengan Resource Server
+* Flow sebagai berikut
+
+![Oauth2-client-credential](img/oauth2-005.jpg)
 
 ### Device ###
 
 * Fitur terbaru --> kamera yang sudah terkoneksi dengan cloud service
 * Input terbatas (misal tidak bisa buka browser / auth form)
 * Menyediakan suatu kode unik saat ingin akses via browser
+* Flow sebagai berikut
+
+![Oauth2-device](img/oauth2-006.jpg)
 
 ## Build and Run ##
 
 ### Spring Boot Initializr ###
 
-1. Create Zipkin Server --> Browse [https://start.spring.io/] (https://start.spring.io/)
+1. Create new project --> Browse [https://start.spring.io/] (https://start.spring.io/)
 
 2. Fill Project Metadata
 
