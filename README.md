@@ -24,7 +24,7 @@ Roadmap
 * Client App juga bisa menggunakan third party apps, contoh : login pada instagram bisa dishare ke facebook atas nama RO
 * Mekanisme yg memastikan client app memiliki akses kontrol / aplikasi yang diijinkan oleh RO sesuai data RO --> Authorization Server 
 
-### Mode (Grant Type) of Auth Server ###
+## Mode (Grant Type) of Auth Server ##
 
 Protokol OAuth memiliki beberapa Mode :
 
@@ -41,7 +41,7 @@ Protokol OAuth memiliki beberapa Mode :
 * Selalu berkaitan dengan Resoure Owner
 * Flow sebagai berikut
 
-![Oauth2-authorization-code](img/oauth2-001.jpg)
+![Oauth2-authorization-code](img/oauth2-002.jpg)
 
 ### Implicit ###
 
