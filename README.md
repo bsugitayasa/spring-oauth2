@@ -8,27 +8,40 @@ Roadmap
 
 ## Spring Oauth2 ##
 
-* Spring OAuth 2.0 sebenarnya adalah untuk Authorization
+* Spring OAuth 2.0 sebenarnya adalah untuk Authorization --> berkaitan dengan permission atau ijin akses/role/privileges
 * Mengijinkan aplikasi pihak ketiga untuk mendapatkan akses terbatas ke HTTP service
 * Satu login untuk banyak aplikasi, contoh : Google, Facebook, Instagram, Twitter, etc
+* Terdapat mekanisme login tidak terlalu diatur --> untuk mengatur login biasanya disediakan protokol lain misal : openId
 
 ## Entity / Terminology ##
 
-![Oauth2-terminology](img/zull-proxy-1.jpg)
+![Oauth2-terminology](img/oauth2-001.jpg)
+
+* Resource Owner (RO) --> yang memiliki data
+* Resource Server (RS) --> aplikasi tempat data dari RO disimpan
+* Client App --> aplikasi lain yang akan memakai data yang tersimpan pada RS
+* Client App bisa di bangun oleh pihak yang sama dengan RS, contoh : google email dengan client app gmail pada mobile
+* Client App juga bisa menggunakan third party apps, contoh : login pada instagram bisa dishare ke facebook atas nama RO
+* Mekanisme yg memastikan client app memiliki akses kontrol / aplikasi yang diijinkan oleh RO sesuai data RO --> Authorization Server 
 
 ### Mode (Grant Type) of Auth Server ###
 
-* Auth Code
+Protokol OAuth memiliki beberapa Mode :
+
+* Authorization Code
 * Implicit
 * Resource Owner Password
 * Client Credential
 * Device
 
-### Auth Code ###
+### Authorization Code ###
 
 * Applikasi web yang dapat menyimpan client key (secret/password)
 * Resource Owner tidak pernah memberikan password ke client app
 * Selalu berkaitan dengan Resoure Owner
+* Flow sebagai berikut
+
+![Oauth2-authorization-code](img/oauth2-001.jpg)
 
 ### Implicit ###
 
@@ -38,29 +51,20 @@ Roadmap
 
 ### Resource Owner Password ###
 
-* Client app dan resource server didevelop oleh pihak yang sama
-* Client app dapat langsung menerima username & password dari Resource Owner
+* Client app dan resource server didevelop oleh pihak yang sama, contoh : facebook membuat client app sendiri (facebook mobile) disimpan di server karena sama-sama di develop oleh perusahaan facebook
+* Client app dapat langsung menerima client credential (username & password) dari Resource Owner --> ContentType : RO & Password
 * Selalu berkaitan dengan Resoure Owner
 
 ### Client Credential ###
 
-* Langsung menerima client credential
 * Client app tidak spesifik terhadap user data tertentu, contoh : treading topik pada twitter
 * Hanya antara Client app dengan Resource Server
 
 ### Device ###
 
 * Fitur terbaru --> kamera yang sudah terkoneksi dengan cloud service
-* Input terbatas (misal tidak bisa buka browser)
+* Input terbatas (misal tidak bisa buka browser / auth form)
 * Menyediakan suatu kode unik saat ingin akses via browser
-
-
-Authentication --> memastikan siapakah yang datang
-Authorization --> berkaitan dengan permission atau ijin akses/ role / privileges
-
-
-menit ke 16 . . . .
-
 
 ## Build and Run ##
 
