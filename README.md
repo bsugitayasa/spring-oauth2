@@ -164,6 +164,18 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     spring:
       application:
         name: account
+      datasource:
+        url: jdbc:mysql://localhost/spring_oauth2
+        username: root
+        password: admin123
+        driver-class-name: com.mysql.jdbc.Driver
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        properties: 
+          hibernate: 
+            format_sql: true
       cloud:
         config:
           discovery:
@@ -173,13 +185,13 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
     ---
     spring:
-      profiles: native
+       profiles: native
     eureka:
       instance:
         hostname: localhost:8899
       client:
-          serviceUrl:
-            defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+        serviceUrl:
+          defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
     ```
 
 
