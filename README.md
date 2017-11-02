@@ -182,7 +182,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
 * Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
 
-    1. V2017110301__Skema_Security.sql
+1. V2017110301__Skema_Security.sql
     
     ```
     CREATE TABLE s_permission (
@@ -228,7 +228,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     );
     ```
     
-    2. V2017110302__Skema_OAuth.sql
+2. V2017110302__Skema_OAuth.sql
     
     ```
     create table oauth_client_details (
@@ -283,7 +283,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     );
     ```
 
-    3. V2017110303__Data_Security.sql
+3. V2017110303__Data_Security.sql
     
     ```
     INSERT INTO s_permission (id, permission_label, permission_value) VALUES
@@ -312,7 +312,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
       ('staff', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW');
     ```
     
-    4. V2017110304__Data_OAuth.sql
+4. V2017110304__Data_OAuth.sql
     
     ```
     INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES
