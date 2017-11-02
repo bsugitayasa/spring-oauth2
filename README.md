@@ -504,6 +504,8 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
 
 1. Akses melalui info uri pada account project via rest client (ex: posman, soapUI, boomerang, insomnia) dengan ketentuan sebagai berikut:
 
+    Path URL
+    
     ```
     http://localhost:8899/oauth/token
     ```
