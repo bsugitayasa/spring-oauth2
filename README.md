@@ -354,20 +354,20 @@ Tambahkan folder db/migration pada source package src/main/resources dan buat be
 
 Tambahkan annotation `@EnableDiscoveryClient` pada main class spring project configuration
 
-    ```java
-    @SpringBootApplication
-    @EnableDiscoveryClient
-    public class AccountApplication {
+```java
+@SpringBootApplication
+@EnableDiscoveryClient
+public class AccountApplication {
 
-        public static void main(String[] args) {
-            SpringApplication.run(AccountApplication.class, args);
-        }
+    public static void main(String[] args) {
+        SpringApplication.run(AccountApplication.class, args);
     }
-    ```
+}
+```
 
 Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan extends `WebSecurityConfigurerAdapter`
 
-    ```java
+    
     @EnableWebSecurity
     public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
         private static final String SQL_LOGIN = "select u.username as username, p.password as password, "
@@ -409,7 +409,7 @@ Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan e
             return super.userDetailsServiceBean();
         }
     }
-    ```
+    
 
 Tambahkan class KonfigurasiAuthserver dengan annotation `@Configuration @EnableAuthorizationServer` dan extends `AuthorizationServerConfigurerAdapter`
     
