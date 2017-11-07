@@ -197,7 +197,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
 ### Build dengan IDE ###
 
-1. Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
+Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
 
 * V2017110301__Skema_Security.sql
     
@@ -351,8 +351,8 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
     ```
     
-    
-2. Tambahkan annotation `@EnableDiscoveryClient` pada main class spring project configuration
+
+Tambahkan annotation `@EnableDiscoveryClient` pada main class spring project configuration
 
     ```java
     @SpringBootApplication
@@ -365,7 +365,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     }
     ```
 
-3. Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan extends `WebSecurityConfigurerAdapter`
+Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan extends `WebSecurityConfigurerAdapter`
 
     ```java
     @EnableWebSecurity
@@ -411,7 +411,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
     }
     ```
 
-4. Tambahkan class KonfigurasiAuthserver dengan annotation `@Configuration @EnableAuthorizationServer` dan extends `AuthorizationServerConfigurerAdapter`
+Tambahkan class KonfigurasiAuthserver dengan annotation `@Configuration @EnableAuthorizationServer` dan extends `AuthorizationServerConfigurerAdapter`
     
     ```java
     @Configuration
