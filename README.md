@@ -525,13 +525,13 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
     
     Basic Auth 
     
-    ```
+    ```java
     authcodeclient : authcode321
     ```
     
     Query Parameter 
     
-    ```
+    ```java
     grant_type      : authorization_code
     code            : hasil request via auth form sebelumnya
     redirect_uri    : http://example.com
@@ -539,13 +539,13 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
     
     Sehingga format url path yang dipanggil adalah 
     
-    ```
+    ```html
     http://localhost:8899/oauth/token?grant_type=authorization_code&code=3FNRRf&redirect_uri=http%3A%2F%2Fexample.com
     ```
     
     Contoh response token yang diperoleh adalah
     
-    ```
+    ```json
     {
         "access_token": "5da488f0-6d64-4c4f-b8f7-ce4714749cfb",
         "token_type": "bearer",
@@ -557,7 +557,7 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
 
 2. Sertakan token untuk mengkases aplikasi payment via url berikut:
 
-    ```
+    ```html
     http://localhost:8767/payment/api/product/p002?access_token=5da488f0-6d64-4c4f-b8f7-ce4714749cfb
     ```
 
