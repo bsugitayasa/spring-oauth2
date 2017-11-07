@@ -5,14 +5,14 @@ Roadmap
 * Overview Spring Oauth2 
 * Build from scratch
 * Live Demo
-<br>
+
 ## Spring Oauth 2.0 ##
 
 * Spring OAuth 2.0 sebenarnya adalah untuk Authorization --> berkaitan dengan permission atau ijin akses/role/privileges
 * Mengijinkan aplikasi pihak ketiga untuk mendapatkan akses terbatas ke HTTP service
 * Satu login untuk banyak aplikasi, contoh : Google, Facebook, Instagram, Twitter, etc
 * Terdapat mekanisme login tidak terlalu diatur --> untuk mengatur login biasanya disediakan protokol lain misal : openId
-<br>
+
 ## Entity / Terminology ##
 
 ![Oauth2-terminology](img/oauth2-001.jpg)
@@ -23,7 +23,7 @@ Roadmap
 * Client App bisa di bangun oleh pihak yang sama dengan RS, contoh : google email dengan client app gmail pada mobile
 * Client App juga bisa menggunakan third party apps, contoh : login pada instagram bisa dishare ke facebook atas nama RO
 * Mekanisme yg memastikan client app memiliki akses kontrol / aplikasi yang diijinkan oleh RO sesuai data RO --> Authorization Server 
-<br>
+
 ## Mode (Grant Type) of Auth Server ##
 
 Protokol OAuth memiliki beberapa Mode :
