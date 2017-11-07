@@ -367,86 +367,86 @@ public class AccountApplication {
 
 Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan extends `WebSecurityConfigurerAdapter`
 
-    
-    @EnableWebSecurity
-    public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
-        private static final String SQL_LOGIN = "select u.username as username, p.password as password, "
-                + "active from s_user u inner join s_user_password p on p.id_user = u.id " + "where username = ? ";
+```java
+@EnableWebSecurity
+public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
+    private static final String SQL_LOGIN = "select u.username as username, p.password as password, "
+            + "active from s_user u inner join s_user_password p on p.id_user = u.id " + "where username = ? ";
 
-        private static final String SQL_PERMISSION = " select u.username, p.permission_value as authority "
-                + "from s_user u inner join s_role r on u.id_role = r.id "
-                + "inner join s_role_permission rp on rp.id_role = r.id "
-                + "inner join s_permission p on rp.id_permission = p.id " + "where u.username = ?";
+    private static final String SQL_PERMISSION = " select u.username, p.permission_value as authority "
+            + "from s_user u inner join s_role r on u.id_role = r.id "
+            + "inner join s_role_permission rp on rp.id_role = r.id "
+            + "inner join s_permission p on rp.id_permission = p.id " + "where u.username = ?";
 
-        @Autowired
-        private DataSource datasource;
+    @Autowired
+    private DataSource datasource;
 
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.jdbcAuthentication().dataSource(datasource).passwordEncoder(passwordEncoder())
-                    .usersByUsernameQuery(SQL_LOGIN).authoritiesByUsernameQuery(SQL_PERMISSION);
-        }
-
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-            return new BCryptPasswordEncoder();
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.formLogin().permitAll().and().logout().and().authorizeRequests().anyRequest().authenticated();
-        }
-
-        @Bean
-        @Override
-        public AuthenticationManager authenticationManagerBean() throws Exception {
-            return super.authenticationManagerBean();
-        }
-
-        @Bean
-        @Override
-        public UserDetailsService userDetailsServiceBean() throws Exception {
-            return super.userDetailsServiceBean();
-        }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().dataSource(datasource).passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery(SQL_LOGIN).authoritiesByUsernameQuery(SQL_PERMISSION);
     }
-    
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.formLogin().permitAll().and().logout().and().authorizeRequests().anyRequest().authenticated();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        return super.userDetailsServiceBean();
+    }
+}
+```
 
 Tambahkan class KonfigurasiAuthserver dengan annotation `@Configuration @EnableAuthorizationServer` dan extends `AuthorizationServerConfigurerAdapter`
     
-    ```java
-    @Configuration
-    @EnableAuthorizationServer
-    public class KonfigurasiAuthserver extends AuthorizationServerConfigurerAdapter {
-        @Autowired
-        @Qualifier("authenticationManagerBean")
-        private AuthenticationManager authenticationManager;
+```java
+@Configuration
+@EnableAuthorizationServer
+public class KonfigurasiAuthserver extends AuthorizationServerConfigurerAdapter {
+    @Autowired
+    @Qualifier("authenticationManagerBean")
+    private AuthenticationManager authenticationManager;
 
-        @Autowired
-        @Qualifier("userDetailsServiceBean")
-        private UserDetailsService userDetailsService;
+    @Autowired
+    @Qualifier("userDetailsServiceBean")
+    private UserDetailsService userDetailsService;
 
-        @Autowired private DataSource dataSource;
+    @Autowired private DataSource dataSource;
 
-        private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        @Override
-        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-            clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
-        }
-
-        @Override
-        public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-            security.checkTokenAccess("hasAuthority('APLIKASI_CLIENT_OAUTH2')")
-                .tokenKeyAccess("permitAll()")
-                .passwordEncoder(passwordEncoder);
-        }
-
-        @Override
-        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            endpoints.authenticationManager(authenticationManager).userDetailsService(userDetailsService);
-        }
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
     }
-    ```
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.checkTokenAccess("hasAuthority('APLIKASI_CLIENT_OAUTH2')")
+            .tokenKeyAccess("permitAll()")
+            .passwordEncoder(passwordEncoder);
+    }
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints.authenticationManager(authenticationManager).userDetailsService(userDetailsService);
+    }
+}
+```
 
 
 ### Request Code Via Auth Form ###
