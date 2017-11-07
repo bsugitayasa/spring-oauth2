@@ -95,19 +95,19 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
     Group
     
-    ```
+    ```java
     com.sharingsession.balicamp.springsecurity    
     ```
 
     Artifact
     
-    ```
+    ```java
     account
     ```
    
     Dependencies
     
-    ```
+    ```java
     Eureka Discovery, Config Client, Web, Security, Flyway, MySQL, JDBC
     ```
    
@@ -120,7 +120,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
 1. Pada `pom.xml` pastikan dependency berikut
     
-    ```
+    ```java
     <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-config</artifactId>
@@ -158,7 +158,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
 2. `applicatioin.properties` rename menjadi `bootstrap.yml` dan sesuaikan konfigurasinya
 
-    ```
+    ```java
     server:
       port: 8899
     spring:
@@ -199,9 +199,9 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
 1. Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
 
-* V2017110301__Skema_Security.sql
+V2017110301__Skema_Security.sql
     
-    ```
+    ```java
     CREATE TABLE s_permission (
       id               VARCHAR(255) NOT NULL,
       permission_label VARCHAR(255) NOT NULL,
