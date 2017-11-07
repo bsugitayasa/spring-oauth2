@@ -517,7 +517,7 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
 
 ### Request Access Token ###
 
-1. Akses melalui info uri pada account project via rest client (ex: posman, soapUI, boomerang, insomnia) dengan ketentuan sebagai berikut:
+1. Akses dengan method `POST` melalui path info uri pada account project via rest client (ex: posman, soapUI, boomerang, insomnia) dengan ketentuan sebagai berikut:
 
     Path URL
     
@@ -530,7 +530,7 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
     ```java
     authcodeclient : authcode321
     ```
-    
+
     Query Parameter 
     
     ```java
@@ -539,10 +539,10 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
     redirect_uri    : http://example.com
     ```
     
-    Sehingga format url path yang dipanggil adalah 
+    Dapat juga dengan langsung mengakses dengan format url path sebagai berikut
     
     ```html
-    http://localhost:8899/oauth/token?grant_type=authorization_code&code=3FNRRf&redirect_uri=http%3A%2F%2Fexample.com
+    curl -X POST --user 'authcodeclient:authcode321' -d 'grant_type=authorization_code&code=y4C0wP&redirect_uri=http%3A%2F%2Fexample.com' http://localhost:8899/oauth/token
     ```
     
     Contoh response token yang diperoleh adalah
