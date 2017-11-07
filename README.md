@@ -329,6 +329,8 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
       ('staff', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW');
     ```
     
+    Untuk encrypt string password menggunakan metode BCryptPasswordEncoder dapat menggunakan tools online : [bcrypt-generator] (https://bcrypt-generator.com)
+    
 * V2017110304__Data_OAuth.sql
     
     ```sql
