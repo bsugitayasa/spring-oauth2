@@ -199,9 +199,9 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
 1. Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
 
-V2017110301__Skema_Security.sql
+* V2017110301__Skema_Security.sql
     
-    ```java
+    ```sql
     CREATE TABLE s_permission (
       id               VARCHAR(255) NOT NULL,
       permission_label VARCHAR(255) NOT NULL,
@@ -247,7 +247,7 @@ V2017110301__Skema_Security.sql
     
 * V2017110302__Skema_OAuth.sql
     
-    ```
+    ```sql
     create table oauth_client_details (
       client_id VARCHAR(255) PRIMARY KEY,
       resource_ids VARCHAR(255),
@@ -302,7 +302,7 @@ V2017110301__Skema_Security.sql
 
 * V2017110303__Data_Security.sql
     
-    ```
+    ```sql
     INSERT INTO s_permission (id, permission_label, permission_value) VALUES
       ('configuresystem', 'CONFIGURE_SYSTEM', 'Configure System'),
       ('editproduct', 'EDIT_PRODUCT', 'Edit Product'),
@@ -331,7 +331,7 @@ V2017110301__Skema_Security.sql
     
 * V2017110304__Data_OAuth.sql
     
-    ```
+    ```sql
     INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES
     ('userpassword', 'marketplace', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW', 'demo', 'password', 'http://example.com', 'APLIKASI_CLIENT_OAUTH2', 1800, 18000, '{}', 'demo');
 
@@ -352,7 +352,7 @@ V2017110301__Skema_Security.sql
     
 2. Tambahkan annotation `@EnableDiscoveryClient` pada main class spring project configuration
 
-    ```
+    ```java
     @SpringBootApplication
     @EnableDiscoveryClient
     public class AccountApplication {
@@ -365,7 +365,7 @@ V2017110301__Skema_Security.sql
 
 3. Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan extends `WebSecurityConfigurerAdapter`
 
-    ```
+    ```java
     @EnableWebSecurity
     public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
         private static final String SQL_LOGIN = "select u.username as username, p.password as password, "
@@ -411,7 +411,7 @@ V2017110301__Skema_Security.sql
 
 4. Tambahkan class KonfigurasiAuthserver dengan annotation `@Configuration @EnableAuthorizationServer` dan extends `AuthorizationServerConfigurerAdapter`
     
-    ```
+    ```java
     @Configuration
     @EnableAuthorizationServer
     public class KonfigurasiAuthserver extends AuthorizationServerConfigurerAdapter {
@@ -455,7 +455,7 @@ V2017110301__Skema_Security.sql
 * Pilih `Approve` pada OAuth Approval dan `Authorize`
 * Cata code hasil response dari auth form, misal :
 
-    ```
+    ```html
     http://example.com/?code=y4C0wP
     ```
     
@@ -467,7 +467,7 @@ V2017110301__Skema_Security.sql
 1. Pilih aplikasi Payment untuk menjadi resource server
 2. Pada `pom.xml` tambahkan dependency berikut
     
-    ```
+    ```java
     <dependency>
         <groupId>org.springframework.security.oauth</groupId>
         <artifactId>spring-security-oauth2</artifactId>
@@ -476,7 +476,7 @@ V2017110301__Skema_Security.sql
     
 3. Pada main class spring boot application, tambahkan annotation `@EnableResourceServer` 
 
-    ```
+    ```java
     @SpringBootApplication @EnableDiscoveryClient @EnableFeignClients @EnableResourceServer
     public class PaymentFeignApplication {
 
@@ -488,7 +488,7 @@ V2017110301__Skema_Security.sql
     
 4. Pada bootstrap.yml tambahkan setingan security oauth2 sebagai berikut
 
-    ```
+    ```java
     security:
       oauth2:
         client:
@@ -501,7 +501,7 @@ V2017110301__Skema_Security.sql
 
 5. Jalankan payment project dengan perintah : `mvn spring-boot:run` dan akses aplikasi via rest misal nya `/payment/api/product/p001`, akan mendapatkan response bahwa untuk akses halaman tersebut harus memiliki full authentication 
 
-    ```
+    ```xml
     <oauth>
         <error_description>
                 Full authentication is required to access this resource
@@ -519,7 +519,7 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
 
     Path URL
     
-    ```
+    ```html
     http://localhost:8899/oauth/token
     ```
     
