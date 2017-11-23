@@ -115,6 +115,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 
 4. Download dan import pada IDE masing-masing
 
+Dokumentasi mengenai flywaydb dapat dilihat pada tautan berikut : [Flywaydb Doc] (https://flywaydb.org/)
 
 ### Build dengan Maven ###
 
