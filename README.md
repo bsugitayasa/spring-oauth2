@@ -198,7 +198,7 @@ Dokumentasi mengenai flywaydb dapat dilihat pada tautan berikut : [Flywaydb Doc]
 
 ### Build dengan IDE ###
 
-Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
+Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan : [Spring Oauth2 Schema] (https://github.com/spring-projects/spring-security-oauth/blob/master/spring-security-oauth2/src/test/resources/schema.sql)
 
 * V2017110301__Skema_Security.sql
 
@@ -238,11 +238,11 @@ Tambahkan folder db/migration pada source package src/main/resources dan buat be
     );
 
 
-    create table s_user_password (
-        id_user varchar(36) not null,
-        password varchar(255) not null,
-        primary key (id_user),
-        foreign key (id_user) references s_user (id)
+    CREATE TABLE s_user_password (
+      id_user VARCHAR(36) NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      PRIMARY KEY (id_user),
+      FOREIGN KEY (id_user) REFERENCES s_user (id)
     );
     ```
 
@@ -336,7 +336,7 @@ Tambahkan folder db/migration pada source package src/main/resources dan buat be
 
     ```sql
     INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES
-    ('userpassword', 'marketplace', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW', 'demo', 'password', 'http://example.com', 'APLIKASI_CLIENT_OAUTH2', 1800, 18000, '{}', 'demo');
+    ('implicitclient', 'marketplace', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW', 'demo', 'password', 'http://example.com', 'APLIKASI_CLIENT_OAUTH2', 1800, 18000, '{}', 'demo');
 
     -- secret : userpassword001
     INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES
@@ -564,4 +564,10 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
     http://localhost:8767/payment/api/product/p002?access_token=5da488f0-6d64-4c4f-b8f7-ce4714749cfb
     ```
 
-#### Selamat Mencoba... ####
+#### Referensi ####
+
+* [Spring OAuth 2 Developers Guide] (http://projects.spring.io/spring-security-oauth/docs/oauth2.html#resource-server-configuration)
+* [Belajar Spring Security dengan OAUTH2 by Endy Muhardin] (https://github.com/endymuhardin/belajar-springoauth2)
+* [Training Microservices dengan Spring Cloud] (https://gitlab.com/training-telkomsigma-201710/catatan-training)
+* [Belajar Oauth2] (https://rizkimufrizal.github.io/belajar-oauth2/)
+* [Oauth.Net] (https://oauth.net)
