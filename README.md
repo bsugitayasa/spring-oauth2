@@ -2,7 +2,7 @@
 
 Roadmap
 
-* Overview Spring Oauth2 
+* Overview Spring Oauth2
 * Build from scratch
 * Live Demo
 
@@ -15,14 +15,14 @@ Roadmap
 
 ## Entity / Terminology ##
 
-![Oauth2-terminology](img/oauth2-001.jpg)
+![Oauth2-terminology](img/oauth2-granttype.jpg)
 
 * Resource Owner (RO) --> yang memiliki data
 * Resource Server (RS) --> aplikasi tempat data dari RO disimpan
 * Client App --> aplikasi lain yang akan memakai data yang tersimpan pada RS
 * Client App bisa di bangun oleh pihak yang sama dengan RS, contoh : google email dengan client app gmail pada mobile
 * Client App juga bisa menggunakan third party apps, contoh : login pada instagram bisa dishare ke facebook atas nama RO
-* Mekanisme yg memastikan client app memiliki akses kontrol / aplikasi yang diijinkan oleh RO sesuai data RO --> Authorization Server 
+* Mekanisme yg memastikan client app memiliki akses kontrol / aplikasi yang diijinkan oleh RO sesuai data RO --> Authorization Server
 
 ## Mode (Grant Type) of Auth Server ##
 
@@ -41,7 +41,7 @@ Protokol OAuth memiliki beberapa Mode :
 * Selalu berkaitan dengan Resoure Owner
 * Flow sebagai berikut
 
-![Oauth2-authorization-code](img/oauth2-002.jpg)
+![Oauth2-authorization-code](img/oauth2-auth-code.jpg)
 
 
 ### Implicit ###
@@ -51,7 +51,7 @@ Protokol OAuth memiliki beberapa Mode :
 * Selalu berkaitan dengan Resoure Owner
 * Flow sebagai berikut
 
-![Oauth2-implicit](img/oauth2-003.jpg)
+![Oauth2-implicit](img/oauth2-implicit.jpg)
 
 
 ### Resource Owner Password ###
@@ -61,7 +61,7 @@ Protokol OAuth memiliki beberapa Mode :
 * Selalu berkaitan dengan Resoure Owner
 * Flow sebagai berikut
 
-![Oauth2-resource-owner-password](img/oauth2-004.jpg)
+![Oauth2-resource-owner-password](img/oauth2-ro-password.jpg)
 
 
 ### Client Credential ###
@@ -70,7 +70,7 @@ Protokol OAuth memiliki beberapa Mode :
 * Hanya antara Client app dengan Resource Server
 * Flow sebagai berikut
 
-![Oauth2-client-credential](img/oauth2-005.jpg)
+![Oauth2-client-credential](img/oauth2-client-credential.jpg)
 
 ### Device ###
 
@@ -80,7 +80,7 @@ Protokol OAuth memiliki beberapa Mode :
 * Biasanya menggunakan metode pooling, karena berjalannya di belakang firewall/proxy dan auth server tidak bisa komunikasi via ip public
 * Flow sebagai berikut
 
-![Oauth2-device](img/oauth2-006.jpg)
+![Oauth2-device](img/oauth2-device.jpg)
 
 Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-2-device-flow-grant/)
 
@@ -94,23 +94,23 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 2. Lengkapi Project Metadata
 
     Group
-    
+
     ```java
     com.sharingsession.balicamp.springsecurity    
     ```
 
     Artifact
-    
+
     ```java
     account
     ```
-   
+
     Dependencies
-    
+
     ```java
     Eureka Discovery, Config Client, Web, Security, Flyway, MySQL, JDBC
     ```
-   
+
 3. Generate Project
 
 4. Download dan import pada IDE masing-masing
@@ -119,7 +119,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 ### Build dengan Maven ###
 
 1. Pada `pom.xml` pastikan dependency berikut
-    
+
     ```java
     <dependency>
         <groupId>org.springframework.cloud</groupId>
@@ -173,8 +173,8 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
         hibernate:
           ddl-auto: update
         show-sql: true
-        properties: 
-          hibernate: 
+        properties:
+          hibernate:
             format_sql: true
       cloud:
         config:
@@ -200,7 +200,7 @@ Referensi : [OAuth 2.0 Device Grant Flow] (https://alexbilbie.com/2016/04/oauth-
 Tambahkan folder db/migration pada source package src/main/resources dan buat beberapa script PLSQL sesuai ketentuan konvension name flyaway data migration, contoh dari schema spring oauth2 dapat dilihat pada tautan [berikut] (https://gist.github.com/leolin310148/3b2cb7d83ba0ec9e1d58)
 
 * V2017110301__Skema_Security.sql
-    
+
     ```sql
     CREATE TABLE s_permission (
       id               VARCHAR(255) NOT NULL,
@@ -244,9 +244,9 @@ Tambahkan folder db/migration pada source package src/main/resources dan buat be
         foreign key (id_user) references s_user (id)
     );
     ```
-    
+
 * V2017110302__Skema_OAuth.sql
-    
+
     ```sql
     create table oauth_client_details (
       client_id VARCHAR(255) PRIMARY KEY,
@@ -301,7 +301,7 @@ Tambahkan folder db/migration pada source package src/main/resources dan buat be
     ```
 
 * V2017110303__Data_Security.sql
-    
+
     ```sql
     INSERT INTO s_permission (id, permission_label, permission_value) VALUES
       ('configuresystem', 'CONFIGURE_SYSTEM', 'Configure System'),
@@ -328,11 +328,11 @@ Tambahkan folder db/migration pada source package src/main/resources dan buat be
       -- password : balicamp123 menggunakan BCryptPasswordEncoder
       ('staff', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW');
     ```
-    
+
     Untuk encrypt string password menggunakan metode BCryptPasswordEncoder dapat menggunakan tools online [bcrypt-generator] (https://bcrypt-generator.com)
-    
+
 * V2017110304__Data_OAuth.sql
-    
+
     ```sql
     INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES
     ('userpassword', 'marketplace', '$2a$10$mWAbi9UrOGaYK8mWNexZ7OfNM8BBaoO.eLGAn/PYnRyXdm/HHt8AW', 'demo', 'password', 'http://example.com', 'APLIKASI_CLIENT_OAUTH2', 1800, 18000, '{}', 'demo');
@@ -350,7 +350,7 @@ Tambahkan folder db/migration pada source package src/main/resources dan buat be
     ('clientapp', 'marketplace', '$2a$10$tHHn7lRIEEIj4S/cdo8IjukTgKImCUlZceNOeyxqCr51sITqr3AYG', 'demo', 'client_credentials', 'http://example.com', 'APLIKASI_CLIENT_OAUTH2', NULL, NULL, '{}', 'demo');
 
     ```
-    
+
 
 Tambahkan annotation `@EnableDiscoveryClient` pada main class spring project configuration
 
@@ -412,7 +412,7 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
 ```
 
 Tambahkan class KonfigurasiAuthserver dengan annotation `@Configuration @EnableAuthorizationServer` dan extends `AuthorizationServerConfigurerAdapter`
-    
+
 ```java
 @Configuration
 @EnableAuthorizationServer
@@ -460,7 +460,7 @@ public class KonfigurasiAuthserver extends AuthorizationServerConfigurerAdapter 
     ```html
     http://example.com/?code=y4C0wP
     ```
-    
+
     Code dari hasil auth form adalah `y4C0wP`
 
 
@@ -468,15 +468,15 @@ public class KonfigurasiAuthserver extends AuthorizationServerConfigurerAdapter 
 
 1. Pilih aplikasi Payment untuk menjadi resource server
 2. Pada `pom.xml` tambahkan dependency berikut
-    
+
     ```java
     <dependency>
         <groupId>org.springframework.security.oauth</groupId>
         <artifactId>spring-security-oauth2</artifactId>
     </dependency>
     ```
-    
-3. Pada main class spring boot application, tambahkan annotation `@EnableResourceServer` 
+
+3. Pada main class spring boot application, tambahkan annotation `@EnableResourceServer`
 
     ```java
     @SpringBootApplication @EnableDiscoveryClient @EnableFeignClients @EnableResourceServer
@@ -487,7 +487,7 @@ public class KonfigurasiAuthserver extends AuthorizationServerConfigurerAdapter 
         }
     }
     ```
-    
+
 4. Pada bootstrap.yml tambahkan setingan security oauth2 sebagai berikut
 
     ```java
@@ -501,7 +501,7 @@ public class KonfigurasiAuthserver extends AuthorizationServerConfigurerAdapter 
           token-info-uri: http://localhost:8899/oauth/check_token
     ```
 
-5. Jalankan payment project dengan perintah : `mvn spring-boot:run` dan akses aplikasi via rest misal nya `/payment/api/product/p001`, akan mendapatkan response bahwa untuk akses halaman tersebut harus memiliki full authentication 
+5. Jalankan payment project dengan perintah : `mvn spring-boot:run` dan akses aplikasi via rest misal nya `/payment/api/product/p001`, akan mendapatkan response bahwa untuk akses halaman tersebut harus memiliki full authentication
 
     ```xml
     <oauth>
@@ -511,7 +511,7 @@ public class KonfigurasiAuthserver extends AuthorizationServerConfigurerAdapter 
         <error>unauthorized</error>
     </oauth>
     ```
-    
+
 Untuk memperoleh full authentication access pada halaman payment API diatas, maka perlu menyertakan access_token
 
 
@@ -520,33 +520,33 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
 1. Akses dengan method `POST` melalui path info uri pada account project via rest client (ex: posman, soapUI, boomerang, insomnia) dengan ketentuan sebagai berikut:
 
     Path URL
-    
+
     ```html
     http://localhost:8899/oauth/token
     ```
-    
-    Basic Auth 
-    
+
+    Basic Auth
+
     ```java
     authcodeclient : authcode321
     ```
 
-    Query Parameter 
-    
+    Query Parameter
+
     ```java
     grant_type      : authorization_code
     code            : hasil request via auth form sebelumnya
     redirect_uri    : http://example.com
     ```
-    
+
     Dapat juga dengan langsung mengakses dengan format url path sebagai berikut
-    
+
     ```html
     curl -X POST --user 'authcodeclient:authcode321' -d 'grant_type=authorization_code&code=y4C0wP&redirect_uri=http%3A%2F%2Fexample.com' http://localhost:8899/oauth/token
     ```
-    
+
     Contoh response token yang diperoleh adalah
-    
+
     ```json
     {
         "access_token": "5da488f0-6d64-4c4f-b8f7-ce4714749cfb",
