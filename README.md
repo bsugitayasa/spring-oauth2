@@ -162,7 +162,7 @@ Dokumentasi mengenai flywaydb dapat dilihat pada tautan berikut : [Flywaydb Doc]
     <dependency>
 			<groupId>org.springframework.security.oauth</groupId>
 			<artifactId>spring-security-oauth2</artifactId>
-		</dependency>
+    </dependency>
     ```
 
 2. `applicatioin.properties` rename menjadi `bootstrap.yml` dan sesuaikan konfigurasinya
