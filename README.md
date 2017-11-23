@@ -157,6 +157,14 @@ Dokumentasi mengenai flywaydb dapat dilihat pada tautan berikut : [Flywaydb Doc]
     </dependency>
     ```
 
+    Tambahan dependency terkait spring-oauth2
+    ```java
+    <dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+		</dependency>
+    ```
+
 2. `applicatioin.properties` rename menjadi `bootstrap.yml` dan sesuaikan konfigurasinya
 
     ```java
@@ -556,7 +564,7 @@ Untuk memperoleh full authentication access pada halaman payment API diatas, mak
         "expires_in": 299,
         "scope": "demo"
     }
-```
+    ```
 
 2. Sertakan token untuk mengkases aplikasi payment via url berikut:
 
