@@ -380,12 +380,12 @@ Tambahkan class KonfigurasiSecurity dengan annotation `@EnableWebSecurity` dan e
 @EnableWebSecurity
 public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
     private static final String SQL_LOGIN = "select u.username as username, p.password as password, "
-            + "active from s_user u inner join s_user_password p on p.id_user = u.id " + "where username = ? ";
+            + "active from s_user u inner join s_user_password p on p.id_user = u.id where username = ? ";
 
     private static final String SQL_PERMISSION = " select u.username, p.permission_value as authority "
             + "from s_user u inner join s_role r on u.id_role = r.id "
             + "inner join s_role_permission rp on rp.id_role = r.id "
-            + "inner join s_permission p on rp.id_permission = p.id " + "where u.username = ?";
+            + "inner join s_permission p on rp.id_permission = p.id where u.username = ?";
 
     @Autowired
     private DataSource datasource;
