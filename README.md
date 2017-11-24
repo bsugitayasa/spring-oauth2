@@ -68,6 +68,7 @@ Protokol OAuth memiliki beberapa Mode :
 
 * Client app tidak spesifik terhadap user data tertentu, contoh : treading topik pada twitter
 * Hanya antara Client app dengan Resource Server
+* Hanya bisa mengidentifikasi client nya dari mana, namun tidak mengetahui user nya siapa
 * Flow sebagai berikut
 
 ![Oauth2-client-credential](img/oauth2-client-credential.jpg)
