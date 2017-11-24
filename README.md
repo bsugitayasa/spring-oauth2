@@ -271,42 +271,42 @@ Tambahkan folder db/migration pada source package src/main/resources dan buat be
       autoapprove VARCHAR(255)
     );
 
-    create table oauth_client_token (
-      token_id VARCHAR(255),
-      token BLOB,
-      authentication_id VARCHAR(255) PRIMARY KEY,
-      user_name VARCHAR(255),
-      client_id VARCHAR(255)
-    );
-
-    create table oauth_access_token (
-      token_id VARCHAR(255),
-      token BLOB,
-      authentication_id VARCHAR(255) PRIMARY KEY,
-      user_name VARCHAR(255),
-      client_id VARCHAR(255),
-      authentication BLOB,
-      refresh_token VARCHAR(255)
-    );
-
-    create table oauth_refresh_token (
-      token_id VARCHAR(255),
-      token BLOB,
-      authentication BLOB
-    );
-
-    create table oauth_code (
-      code VARCHAR(255), authentication BLOB
-    );
-
-    create table oauth_approvals (
-      userId VARCHAR(255),
-      clientId VARCHAR(255),
-      scope VARCHAR(255),
-      status VARCHAR(10),
-      expiresAt TIMESTAMP DEFAULT  CURRENT_TIMESTAMP,
-      lastModifiedAt TIMESTAMP DEFAULT  CURRENT_TIMESTAMP
-    );
+    -- create table oauth_client_token (
+    --   token_id VARCHAR(255),
+    --   token BLOB,
+    --   authentication_id VARCHAR(255) PRIMARY KEY,
+    --   user_name VARCHAR(255),
+    --   client_id VARCHAR(255)
+    -- );
+    --
+    -- create table oauth_access_token (
+    --   token_id VARCHAR(255),
+    --   token BLOB,
+    --   authentication_id VARCHAR(255) PRIMARY KEY,
+    --   user_name VARCHAR(255),
+    --   client_id VARCHAR(255),
+    --   authentication BLOB,
+    --   refresh_token VARCHAR(255)
+    -- );
+    --
+    -- create table oauth_refresh_token (
+    --   token_id VARCHAR(255),
+    --   token BLOB,
+    --   authentication BLOB
+    -- );
+    --
+    -- create table oauth_code (
+    --   code VARCHAR(255), authentication BLOB
+    -- );
+    --
+    -- create table oauth_approvals (
+    --   userId VARCHAR(255),
+    --   clientId VARCHAR(255),
+    --   scope VARCHAR(255),
+    --   status VARCHAR(10),
+    --   expiresAt TIMESTAMP DEFAULT  CURRENT_TIMESTAMP,
+    --   lastModifiedAt TIMESTAMP DEFAULT  CURRENT_TIMESTAMP
+    -- );
     ```
 
 * V2017110303__Data_Security.sql
